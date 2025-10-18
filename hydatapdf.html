@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Paper - HydraData</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --text-color: #374151;
+            --border-color: #e5e7eb;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: #f5f7fa;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* PDF Container */
+        .pdf-container {
+            margin-top: 80px;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .pdf-page {
+            padding: 60px 40px;
+            position: relative;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        h1 i {
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background-color: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 30px 0;
+        }
+
+        /* Problem/Solution Cards */
+        .card {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(59, 130, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+
+        /* Roadmap Timeline */
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30px;
+            height: 100%;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 20px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .timeline-date {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .timeline-content {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Value Grid */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .value-item {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .value-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .value-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 50px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-description:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .social-links {
+            display: flex;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            margin-left: 20px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            nav ul {
+                margin-top: 15px;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .pdf-page {
+                padding: 40px 20px;
+            }
+
+            .timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item {
+                padding-left: 50px;
+            }
+
+            .timeline-dot {
+                left: 5px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .social-links {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cube"></i>
+                    HydraData
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#tentang">Tentang</a></li>
+                        <li><a href="#visi-misi">Visi & Misi</a></li>
+                        <li><a href="#masalah">Masalah</a></li>
+                        <li><a href="#solusi">Solusi</a></li>
+                        <li><a href="#roadmap">Roadmap</a></li>
+                        <li><a href="#nilai">Nilai</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="pdf-container">
+            <div class="pdf-page">
+                <div class="section visible" id="tentang">
+                    <h1><i class="fas fa-book"></i> Company Paper — <span style="color: var(--primary-color);">HydraData</span></h1>
+                    
+                    <h2>🔹 Tentang HydraData</h2>
+                    <p><strong>HydraData</strong> adalah perusahaan startup teknologi yang berfokus pada pengembangan sistem penyimpanan data berbasis <strong>blockchain hybrid</strong>.</p>
+                    <p>Kami membangun infrastruktur <strong>HydraChain</strong>, jaringan yang menggabungkan keamanan blockchain publik dengan efisiensi sistem off-chain untuk menghadirkan penyimpanan data yang <strong>aman, transparan, dan terverifikasi</strong>.</p>
+                    
+                    <div class="highlight-box">
+                        <p>HydraData lahir dari kebutuhan akan solusi data yang dapat dipercaya — di era di mana integritas, keaslian, dan keamanan informasi menjadi fondasi utama transformasi digital.</p>
+                    </div>
+                </div>
+
+                <div class="section" id="visi-misi">
+                    <h2>🎯 Visi & Misi</h2>
+                    
+                    <h3>Visi:</h3>
+                    <p>Menjadi pelopor penyimpanan data terverifikasi berbasis blockchain yang aman, transparan, dan dapat diakses lintas industri.</p>
+                    
+                    <h3>Misi:</h3>
+                    <ul>
+                        <li>Mengembangkan teknologi blockchain hybrid yang efisien dan dapat diskalakan.</li>
+                        <li>Meningkatkan kepercayaan publik terhadap data melalui transparansi dan verifikasi otomatis.</li>
+                        <li>Menyediakan infrastruktur terbuka yang bisa diintegrasikan dengan lembaga pendidikan, kesehatan, dan pemerintahan.</li>
+                        <li>Mendorong adopsi teknologi blockchain untuk tata kelola data yang lebih aman dan efisien.</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="masalah">
+                    <h2>🧩 Masalah yang Ingin Diselesaikan</h2>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <h3>Ketergantungan pada sistem penyimpanan terpusat</h3>
+                        </div>
+                        <p>→ Rentan terhadap serangan siber dan kegagalan sistem tunggal (single point of failure).</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-eye-slash"></i>
+                            </div>
+                            <h3>Kurangnya transparansi dan keaslian data</h3>
+                        </div>
+                        <p>→ Data sering dimanipulasi tanpa sistem audit yang jelas.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <h3>Biaya dan kompleksitas validasi</h3>
+                        </div>
+                        <p>→ Institusi memerlukan proses panjang untuk memverifikasi data akademik, medis, atau publik.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Pertumbuhan data eksponensial</h3>
+                        </div>
+                        <p>→ Sistem konvensional tidak efisien menangani volume data besar tanpa mengorbankan keamanan.</p>
+                    </div>
+                </div>
+
+                <div class="section" id="solusi">
+                    <h2>💡 Solusi: Teknologi <span style="color: var(--primary-color);">HydraChain</span></h2>
+                    
+                    <p><strong>HydraChain</strong> adalah sistem penyimpanan <strong>hybrid blockchain</strong> yang menggabungkan dua dunia:</p>
+                    
+                    <div class="highlight-box">
+                        <ul>
+                            <li><strong>On-Chain:</strong> Menyimpan data hash, riwayat transaksi, dan metadata penting secara publik untuk transparansi.</li>
+                            <li><strong>Off-Chain:</strong> Menyimpan data utama (seperti dokumen atau rekam medis) di jaringan terdistribusi seperti IPFS dengan enkripsi berlapis.</li>
+                        </ul>
+                    </div>
+                    
+                    <p>Dengan model ini, HydraData menghadirkan keseimbangan antara <strong>keamanan, privasi, dan efisiensi</strong> — memungkinkan organisasi menyimpan data penting dengan verifikasi otomatis tanpa membebani jaringan blockchain.</p>
+                </div>
+
+                <div class="section" id="roadmap">
+                    <h2>🗓️ Roadmap HydraData</h2>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">Q4 2025 — Branding & Foundation</div>
+                            <div class="timeline-content">
+                                <p>Pengembangan identitas merek HydraData, pembuatan logo, dan penetapan visi serta misi perusahaan.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">Q2 2026 — Testnet Launch</div>
+                            <div class="timeline-content">
+                                <p>Peluncuran jaringan uji coba untuk pengujian teknologi blockchain hybrid dan pengumpulan umpan balik dari komunitas.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">Q1 2027 — Pilot Projects</div>
+                            <div class="timeline-content">
+                                <p>Implementasi proyek percontohan dengan mitra strategis di sektor pendidikan dan kesehatan.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">Q1 2028 — Mainnet Launch</div>
+                            <div class="timeline-content">
+                                <p>Peluncuran jaringan utama HydraData dan pembukaan akses publik untuk platform penyimpanan data terverifikasi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section" id="nilai">
+                    <h2>💎 Nilai Perusahaan</h2>
+                    
+                    <div class="value-grid">
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="value-title">Keamanan</div>
+                            <p>Data dilindungi melalui enkripsi dan sistem blockchain desentralisasi.</p>
+                        </div>
+                        
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="value-title">Transparansi</div>
+                            <p>Setiap transaksi dan perubahan data tercatat permanen di blockchain.</p>
+                        </div>
+                        
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="value-title">Integritas</div>
+                            <p>Tidak ada pihak yang dapat memanipulasi data tanpa jejak.</p>
+                        </div>
+                        
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="value-title">Inovasi</div>
+                            <p>Mendorong kemajuan teknologi penyimpanan data global.</p>
+                        </div>
+                        
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="value-title">Kolaborasi</div>
+                            <p>Bekerja sama dengan komunitas dan lembaga untuk menciptakan ekosistem data terpercaya.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="cta-section">
+                        <h2 class="cta-title">🚀 Penutup</h2>
+                        <p class="cta-description">HydraData hadir sebagai pionir dalam revolusi penyimpanan data terverifikasi. Melalui <strong>HydraChain</strong>, kami berkomitmen menciptakan ekosistem data yang aman, transparan, dan efisien — menghadirkan kepercayaan baru bagi dunia digital.</p>
+                        <p class="cta-description">Kami percaya, masa depan data dimulai dari <strong>keamanan, transparansi, dan kepercayaan</strong>. Dan HydraData adalah fondasinya.</p>
+                    </div>
+                </div>
+                
+                <div class="page-number">Halaman 1</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    <p>&copy; 2023 HydraData. All rights reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for section animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Add animation to cards on hover
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add animation to value items on hover
+        document.querySelectorAll('.value-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Timeline animation on scroll
+        const timelineObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const dot = entry.target.querySelector('.timeline-dot');
+                    dot.style.animation = 'pulse 1.5s infinite';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            timelineObserver.observe(item);
+        });
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+                }
+                70% {
+                    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
